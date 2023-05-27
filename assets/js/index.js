@@ -70,8 +70,14 @@ const Xpos2Paraph = document.querySelector("#Xpos2");
 const Ypos2Paraph = document.querySelector("#Ypos2");
 const nbrCoups = document.querySelector("#nbrCoups");
 const mapNumber = document.querySelector("#mapNumber");
+
+
 const modalFin = document.querySelector("#modalFin");
 const paraphFin = document.querySelector("#paraphFin");
+const titleFin = modalFin.querySelector("h2");
+
+const modalMatch = document.querySelector("#modalMatch");
+const titleMatch = modalMatch.querySelector("h2");
 
 let Xpos1 = 0;
 let Ypos1 = 0;
@@ -165,8 +171,9 @@ function deleteGrid(){
 let updateId;
 
 function topDepart(){
-    
-    modalFin.style.display = "none";
+    clearTimeout(modalMatchTimeOut);
+    modalMatchTimeOut = null;
+    modalMatch.style.display = "none";
     updateId = setInterval(updatePositions, 750);
 }
 
@@ -195,8 +202,9 @@ function updatePositions(){
         
     )
     {
-            modalFin.style.display = "block";
-            paraphFin.textContent = "Fin de la map n°" + numMap + " avec " + nombreDeCoups + " coups de désplacements.";
+            modalFin.style.display = "flex";
+            titleFin.textContent = "Fin de la map n°" + (numMap+1);
+            paraphFin.textContent = "Nombre de coups: " + nombreDeCoups;
         
             nombreDeCoups = 0;
             numMap++;
@@ -265,19 +273,27 @@ function updatePositions(){
         
         nombreDeCoups++;
         nbrCoups.textContent = "Nombre de coups : " + nombreDeCoups;
-        mapNumber.textContent = "Carte n°: " + numMap;
+        mapNumber.textContent = "Map N°: " + (numMap+1);
         deleteGrid();
         gridCreator(mapEnCours);
     }
 }
 
+function displayMatch(){
+    modalFin.style.display = "none";
+    titleMatch.textContent= "Map N°" + (numMap+1);
+    modalMatch.style.display = "flex";
+}
+
+
 let numMap = 0;
+let modalMatchTimeOut = null;
 
 function newMap(){
-    
+    modalMatchTimeOut = setTimeout(displayMatch, 2000);
     mapEnCours = maps[counterMap];
     gridCreator(mapEnCours);
-    timerFirst = setTimeout(topDepart, 2000);
+    timerFirst = setTimeout(topDepart, 4000);
 }
 
 window.addEventListener("DOMContentLoaded", function()
